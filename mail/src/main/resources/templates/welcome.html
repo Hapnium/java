@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Hapnium</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 2rem;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2d3748;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #4a5568;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Welcome, <span th:text="${name}">User</span> 👋</h2>
+    <p>
+        We're excited to have you with us at Hapnium. Today is <strong th:text="${date}">some date</strong> — a perfect day to get started.
+    </p>
+
+    <p>
+        Feel free to explore and reach out if you need any help.
+    </p>
+
+    <p class="footer">
+        — The Hapnium Team
+    </p>
+</div>
+</body>
+</html>
