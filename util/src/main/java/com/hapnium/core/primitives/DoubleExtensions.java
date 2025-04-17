@@ -1,5 +1,8 @@
 package com.hapnium.core.primitives;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.time.Duration;
 import java.util.List;
 
@@ -10,12 +13,12 @@ public class DoubleExtensions {
     }
 
     // Checks if double equals any item in the list
-    public static boolean equalsAny(double a, List<Double> values) {
+    public static boolean equalsAny(double a, @NotNull List<Double> values) {
         return values.stream().anyMatch(v -> equals(a, v));
     }
 
     // Checks if double equals all items in the list
-    public static boolean equalsAll(double a, List<Double> values) {
+    public static boolean equalsAll(double a, @NotNull List<Double> values) {
         return values.stream().allMatch(v -> equals(a, v));
     }
 
@@ -25,12 +28,12 @@ public class DoubleExtensions {
     }
 
     // Checks if double does not equal any item
-    public static boolean notEqualsAny(double a, List<Double> values) {
+    public static boolean notEqualsAny(double a, @NotNull List<Double> values) {
         return values.stream().noneMatch(v -> equals(a, v));
     }
 
     // Checks if double does not equal all items
-    public static boolean notEqualsAll(double a, List<Double> values) {
+    public static boolean notEqualsAll(double a, @NotNull List<Double> values) {
         return values.stream().allMatch(v -> equals(a, v));
     }
 
@@ -116,10 +119,14 @@ public class DoubleExtensions {
     }
 
     // Format to decimal places
+    @NotNull
+    @Contract(pure = true)
     public static String toDp(double a, int decimalPlaces) {
         return String.format("%." + decimalPlaces + "f", a);
     }
 
+    @NotNull
+    @Contract(pure = true)
     public static String toDp(double a) {
         return toDp(a, 2); // default 2 decimal places
     }
@@ -155,6 +162,7 @@ public class DoubleExtensions {
     }
 
     // Distance formatting
+    @NotNull
     public static String distance(double a) {
         if (isGreaterThanOrEqualTo(a, 1000)) {
             double kilometers = a / 1000;
@@ -180,6 +188,7 @@ public class DoubleExtensions {
     }
 
     // Format media duration
+    @NotNull
     public static String mediaDuration(double a, boolean addSpacing) {
         int totalSeconds = (int) a;
 
@@ -196,6 +205,7 @@ public class DoubleExtensions {
         }
     }
 
+    @NotNull
     public static String mediaDuration(double a) {
         return mediaDuration(a, true);
     }
