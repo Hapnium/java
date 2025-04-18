@@ -5,13 +5,14 @@ import com.hapnium.core.models.MailAttachment;
 import com.hapnium.core.models.MailRequest;
 import com.hapnium.core.models.MailTag;
 import com.resend.services.emails.model.CreateEmailOptions;
+import org.jetbrains.annotations.NotNull;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.util.Objects;
 
 class MailUtils {
-    public static CreateEmailOptions getOptions(MailRequest param) {
+    public static CreateEmailOptions getOptions(@NotNull MailRequest param) {
         CreateEmailOptions.Builder builder = CreateEmailOptions.builder();
         builder.from(param.getFrom());
         builder.to(param.getTo());
@@ -54,7 +55,7 @@ class MailUtils {
         return builder.build();
     }
 
-    public static ClassLoaderTemplateResolver getResolver(String templateDirectory) {
+    public static @NotNull ClassLoaderTemplateResolver getResolver(String templateDirectory) {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
         resolver.setPrefix(templateDirectory);
         resolver.setSuffix(".html");

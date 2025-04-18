@@ -30,10 +30,6 @@ public class MailAttachment {
      * @return a new {@link Attachment} object with the current parameters.
      */
     public Attachment getAttachment() {
-        return Attachment.builder()
-                .fileName(fileName)
-                .content(content)
-                .path(path)
-                .build();
+        return Attachment.builder().fileName(fileName).content(content).path(path).build();
     }
 }

@@ -6,6 +6,7 @@ import com.hapnium.core.models.MailRequest;
 import com.hapnium.core.service.MailProviderService;
 import com.hapnium.core.service.MailService;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -34,7 +35,7 @@ class Mailer implements MailService {
      * @param param The {@link MailParam} where email provider's configuration lies.
      * @throws HapMailException if both templateDirectory and apiKey are null or empty.
      */
-    Mailer(MailParam param) {
+    Mailer(@NotNull MailParam param) {
         if (param.getTemplateDirectory() != null && !param.getTemplateDirectory().isEmpty()) {
             TemplateEngine engine = new TemplateEngine();
             engine.setTemplateResolver(MailUtils.getResolver(param.getTemplateDirectory()));
@@ -59,7 +60,7 @@ class Mailer implements MailService {
      * @throws HapMailException if rendering fails due to missing template or context errors.
      */
     @Override
-    public String convertHtmlToString(String template, Map<String, Object> params) {
+    public String convertHtmlToString(String template, @NotNull Map<String, Object> params) {
         Context context = new Context();
         params.forEach(context::setVariable);
 

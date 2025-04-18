@@ -2,6 +2,7 @@ package com.hapnium.core.models;
 
 import com.hapnium.core.enums.MailProvider;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Configuration parameters required for sending emails using SMTP or an email service provider.
@@ -79,5 +80,15 @@ public class MailParam {
         }
 
         return provider;
+    }
+
+    public MailParam() {}
+
+    public static @NotNull MailParam resend(String apiKey, String templateDirectory) {
+        MailParam param = new MailParam();
+        param.setApiKey(apiKey);
+        param.setTemplateDirectory(templateDirectory);
+
+        return param;
     }
 }

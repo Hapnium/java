@@ -3,6 +3,8 @@ package com.hapnium.core;
 import com.hapnium.core.models.MailParam;
 import com.hapnium.core.models.MailRequest;
 import com.hapnium.core.service.MailService;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -41,7 +43,8 @@ public class HapMail implements MailService {
      * @param param The {@link MailParam} where email provider's configuration lies.
      * @return a new instance of {@code HapMail}.
      */
-    public static HapMail create(MailParam param) {
+    @Contract("_ -> new")
+    public static @NotNull HapMail create(MailParam param) {
         return new HapMail(param);
     }
 
