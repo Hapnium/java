@@ -2,6 +2,7 @@ package com.hapnium.core.mfa;
 
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
+import org.jetbrains.annotations.NotNull;
 
 import java.security.SecureRandom;
 
@@ -20,7 +21,7 @@ class MFA implements MFAService {
     private final TOTP totp = new TOTP();
 
     @Override
-    public String generateSecret(Boolean readable) {
+    public String generateSecret(@NotNull Boolean readable) {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[20];
         random.nextBytes(bytes);
@@ -36,7 +37,7 @@ class MFA implements MFAService {
     }
 
     @Override
-    public String getCode(String secret) {
+    public String getCode(@NotNull String secret) {
         String hexKey = Hex.encodeHexString(new Base32().decode(secret.replace(" ", "").toUpperCase()));
         String hexTime = Long.toHexString((System.currentTimeMillis() / 1000) / 30);
 
@@ -44,7 +45,7 @@ class MFA implements MFAService {
     }
 
     @Override
-    public boolean isValid(String code, String secret) {
+    public boolean isValid(@NotNull String code, String secret) {
         return code.equals(getCode(secret));
     }
 }

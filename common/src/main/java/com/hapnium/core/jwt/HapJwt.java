@@ -2,6 +2,8 @@ package com.hapnium.core.jwt;
 
 import com.hapnium.core.exception.HapJwtException;
 import com.hapnium.core.jwt.models.JwtRequest;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * HapJwt provides a simple and secure interface for generating and parsing JSON Web Tokens (JWT).
@@ -25,7 +27,8 @@ public class HapJwt implements JwtService {
      * @param issuer     Issuer of the jwt (usually your app name).
      * @return HapJwt instance.
      */
-    public static HapJwt create(String secret, String issuer) {
+    @Contract("_, _ -> new")
+    public static @NotNull HapJwt create(String secret, String issuer) {
         return new HapJwt(new Jwt(secret, issuer));
     }
 
@@ -37,7 +40,8 @@ public class HapJwt implements JwtService {
      * @param expiration Expiration duration in milliseconds.
      * @return HapJwt instance.
      */
-    public static HapJwt create(String secret, String issuer, Long expiration) {
+    @Contract("_, _, _ -> new")
+    public static @NotNull HapJwt create(String secret, String issuer, Long expiration) {
         return new HapJwt(new Jwt(secret, issuer, expiration));
     }
 
@@ -58,6 +62,11 @@ public class HapJwt implements JwtService {
     @Override
     public String get(String token, String identifier) {
         return delegate.get(token, identifier);
+    }
+
+    @Override
+    public <T> T get(String token, String identifier, Class<T> type) {
+        return delegate.get(token, identifier, type);
     }
 
     @Override

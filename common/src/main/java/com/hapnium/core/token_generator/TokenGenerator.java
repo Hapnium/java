@@ -1,6 +1,7 @@
 package com.hapnium.core.token_generator;
 
 import com.hapnium.core.token_generator.models.TokenParam;
+import org.jetbrains.annotations.NotNull;
 
 import java.security.SecureRandom;
 
@@ -66,7 +67,7 @@ class TokenGenerator implements TokenGeneratorService {
      *
      * @return Default {@link TokenParam}.
      */
-    private TokenParam defaultParam() {
+    private @NotNull TokenParam defaultParam() {
         TokenParam param = new TokenParam();
         param.setOtpCharacters("0123456789");
         param.setOtpLength(6);
@@ -83,7 +84,7 @@ class TokenGenerator implements TokenGeneratorService {
      * @param characters Allowed characters to use in the string.
      * @return A {@link StringBuilder} containing the generated value.
      */
-    private StringBuilder generate(int length, String characters) {
+    private @NotNull StringBuilder generate(int length, String characters) {
         StringBuilder token = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             int index = random.nextInt(characters.length());
@@ -114,7 +115,7 @@ class TokenGenerator implements TokenGeneratorService {
     }
 
     @Override
-    public String generate(String characters, Integer length) {
+    public String generate(@NotNull String characters, Integer length) {
         return generate(length, characters.replaceAll(" ", "")).toString();
     }
 }

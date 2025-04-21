@@ -1,6 +1,7 @@
 package com.hapnium.core.mfa;
 
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -41,7 +42,7 @@ class TOTP {
      *
      * @return a byte array
      */
-    private byte[] hexStr2Bytes(String hex){
+    private byte @NotNull [] hexStr2Bytes(String hex){
         // Adding one byte to get the right conversion
         // Values starting with "0" can be converted
         byte[] bArray = new BigInteger("10" + hex,16).toByteArray();
@@ -113,7 +114,7 @@ class TOTP {
      * @return a numeric String in base 10 that includes digits
      */
 
-    private String generate(String key, String time, String returnDigits, String crypto){
+    private @NotNull String generate(String key, String time, String returnDigits, String crypto){
         int codeDigits = Integer.decode(returnDigits);
         StringBuilder result;
 

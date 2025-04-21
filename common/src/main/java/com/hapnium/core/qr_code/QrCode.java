@@ -6,6 +6,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import org.apache.commons.codec.binary.Base64;
 import com.hapnium.core.exception.HapQrCodeException;
 import com.hapnium.core.qr_code.models.QrCodeRequest;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -66,7 +67,7 @@ class QrCode implements QrCodeService {
      * @return A BufferedImage representing the QR code.
      * @throws HapQrCodeException if image generation fails.
      */
-    private BufferedImage getBufferedImage(QrCodeRequest param) {
+    private @NotNull BufferedImage getBufferedImage(QrCodeRequest param) {
         try {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix bitMatrix = qrCodeWriter.encode(param.getUrl(), BarcodeFormat.QR_CODE, param.getWidth(), param.getHeight());
@@ -84,7 +85,7 @@ class QrCode implements QrCodeService {
      * @param matrix The BitMatrix representing the QR code.
      * @return A BitMatrix with trimmed white padding.
      */
-    private BitMatrix trimWhitePadding(BitMatrix matrix) {
+    private @NotNull BitMatrix trimWhitePadding(@NotNull BitMatrix matrix) {
         int[] enclosingRectangle = matrix.getEnclosingRectangle();
         int w = enclosingRectangle[2];
         int h = enclosingRectangle[3];
@@ -108,7 +109,7 @@ class QrCode implements QrCodeService {
      * @param param The parameters that customize the QR code (e.g., size, color, transparency).
      * @return A BufferedImage representing the QR code.
      */
-    private BufferedImage createScaledQRCode(BitMatrix bitMatrix, QrCodeRequest param) {
+    private @NotNull BufferedImage createScaledQRCode(@NotNull BitMatrix bitMatrix, @NotNull QrCodeRequest param) {
         // Determine padding when not transparent
         int p = param.getTransparent() ? 0 : Math.min(param.getWidth(), param.getHeight()) / 20; // 5% of the smaller dimension
 

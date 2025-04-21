@@ -6,6 +6,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.security.Key;
 import java.util.Date;
@@ -37,7 +39,8 @@ class Jwt implements JwtService {
         this.expiration = expiration;
     }
 
-    private Key getSigningKey() {
+    @Contract(" -> new")
+    private @NotNull Key getSigningKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
@@ -63,7 +66,7 @@ class Jwt implements JwtService {
         }
     }
 
-    private <T> T extract(String token, Function<Claims, T> fetch) {
+    private <T> T extract(String token, @NotNull Function<Claims, T> fetch) {
         return fetch.apply(fetch(token));
     }
 
@@ -118,6 +121,15 @@ class Jwt implements JwtService {
     public String get(String token, String identifier) {
         try {
             return extract(token, claims -> claims.get(identifier, String.class));
+        } catch (Exception e) {
+            throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Failed to extract claim '" + identifier + "' from JWT", e);
+        }
+    }
+
+    @Override
+    public <T> T get(String token, String identifier, Class<T> type) {
+        try {
+            return extract(token, claims -> claims.get(identifier, type));
         } catch (Exception e) {
             throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Failed to extract claim '" + identifier + "' from JWT", e);
         }
