@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hapnium</groupId>
-    <artifactId>core</artifactId> <!-- this is the parent -->
+    <artifactId>core</artifactId>
     <version>1.0.3</version>
     <packaging>pom</packaging>
 
