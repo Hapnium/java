@@ -1,6 +1,9 @@
 package com.hapnium.core.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <h2>NotificationMessage</h2>
@@ -14,6 +17,9 @@ import lombok.Data;
  * @param <T> the type of the custom data payload.
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class NotificationMessage<T> {
     /**
      * The target device token to which the notification should be delivered.
@@ -37,6 +43,9 @@ public class NotificationMessage<T> {
      * @param <T> the type of the optional custom data payload.
      */
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Details<T> {
         /**
          * The title of the notification displayed to the user.

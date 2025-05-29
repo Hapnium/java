@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +38,7 @@ class HapJwtTest {
         assertEquals("user123", hapJwt.getSubject(token));
         assertEquals("admin", hapJwt.get(token, "role"));
         assertEquals("premium", hapJwt.get(token, "tier"));
-        assertEquals(AUDIENCE, hapJwt.getAudience(token));
+        assertEquals(Set.of(AUDIENCE), hapJwt.getAudience(token));
         assertFalse(hapJwt.isExpired(token));
         assertTrue(hapJwt.isSigned(token, ISSUER));
     }

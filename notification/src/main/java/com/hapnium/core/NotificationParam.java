@@ -1,6 +1,9 @@
 package com.hapnium.core;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <h2>NotificationParam</h2>
@@ -11,6 +14,9 @@ import lombok.Data;
  * </p>
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 class NotificationParam {
     /**
      * The type of credential (typically "service_account").

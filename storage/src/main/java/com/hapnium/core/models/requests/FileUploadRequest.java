@@ -1,11 +1,17 @@
 package com.hapnium.core.models.requests;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents a single file upload request payload.
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class FileUploadRequest {
     /**
      * Path to the file on the file system.

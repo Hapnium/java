@@ -95,27 +95,27 @@ class TokenGenerator implements TokenGeneratorService {
     }
 
     @Override
-    public String generateOtp() {
+    public @NotNull String generateOtp() {
         return generateWithOtp(param.getOtpLength());
     }
 
     @Override
-    public String generateWithOtp(Integer length) {
+    public @NotNull String generateWithOtp(Integer length) {
         return generate(length, param.getOtpCharacters()).toString();
     }
 
     @Override
-    public String generate() {
+    public @NotNull String generate() {
         return generate(param.getTokenLength());
     }
 
     @Override
-    public String generate(Integer length) {
+    public @NotNull String generate(Integer length) {
         return generate(length, param.getTokenCharacters()).toString();
     }
 
     @Override
-    public String generate(@NotNull String characters, Integer length) {
+    public @NotNull String generate(@NotNull String characters, Integer length) {
         return generate(length, characters.replaceAll(" ", "")).toString();
     }
 }

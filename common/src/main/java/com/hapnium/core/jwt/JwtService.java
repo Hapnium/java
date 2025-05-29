@@ -3,6 +3,8 @@ package com.hapnium.core.jwt;
 import com.hapnium.core.exception.HapJwtException;
 import com.hapnium.core.jwt.models.JwtRequest;
 
+import java.util.Set;
+
 /**
  * JwtService provides an abstraction for generating and validating JSON Web Tokens (JWTs).
  * This interface defines contract methods for common JWT operations such as creation,
@@ -73,9 +75,9 @@ interface JwtService {
      * The audience is typically a service name or identifier that the jwt is intended for.
      *
      * @param token the JWT string.
-     * @return the audience value as a {@link String}, or {@code null} if absent.
+     * @return the audience value as a set of {@link String}, or {@code null} if absent.
      */
-    String getAudience(String token);
+    Set<String> getAudience(String token);
 
     /**
      * Validates whether the JWT was signed and issued by a trusted issuer.

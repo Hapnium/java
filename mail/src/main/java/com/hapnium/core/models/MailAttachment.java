@@ -1,13 +1,19 @@
 package com.hapnium.core.models;
 
 import com.resend.services.emails.model.Attachment;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents an email attachment that can be included in a message.
  * This model wraps around Resend's {@link Attachment} object.
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MailAttachment {
     /**
      * The name of the file to be displayed in the email.

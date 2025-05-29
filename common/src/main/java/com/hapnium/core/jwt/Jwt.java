@@ -1,6 +1,7 @@
 package com.hapnium.core.jwt;
 
 import com.hapnium.core.exception.HapJwtException;
+import com.hapnium.core.jwt.enums.JwtStatus;
 import com.hapnium.core.jwt.models.JwtRequest;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -9,8 +10,9 @@ import io.jsonwebtoken.security.Keys;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -23,8 +25,9 @@ class Jwt implements JwtService {
 
     Jwt(String secret, String issuer) {
         if ((secret == null || secret.isEmpty()) || (issuer == null || issuer.isEmpty())) {
-            throw new HapJwtException(JwtConstant.SECRET_OR_ISSUER_MISSING, "Secret or Issuer cannot be null or empty");
+            throw new HapJwtException(JwtStatus.SECRET_OR_ISSUER_MISSING, "Secret or Issuer cannot be null or empty");
         }
+
         this.secret = secret;
         this.issuer = issuer;
         this.expiration = null;
@@ -32,37 +35,38 @@ class Jwt implements JwtService {
 
     Jwt(String secret, String issuer, Long expiration) {
         if ((secret == null || secret.isEmpty()) || (issuer == null || issuer.isEmpty()) || expiration == null) {
-            throw new HapJwtException(JwtConstant.SECRET_ISSUER_EXPIRATION_MISSING, "Secret, Expiration, or Issuer cannot be null or empty");
+            throw new HapJwtException(JwtStatus.SECRET_ISSUER_EXPIRATION_MISSING, "Secret, Expiration, or Issuer cannot be null or empty");
         }
+
         this.secret = secret;
         this.issuer = issuer;
         this.expiration = expiration;
     }
 
     @Contract(" -> new")
-    private @NotNull Key getSigningKey() {
+    private @NotNull SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
     private Claims fetch(String token) {
         try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+            return Jwts.parser()
+                    .verifyWith(getSigningKey())
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
         } catch (ExpiredJwtException e) {
-            throw new HapJwtException(JwtConstant.TOKEN_EXPIRED, "JWT token has expired", e);
+            throw new HapJwtException(JwtStatus.TOKEN_EXPIRED, "JWT token has expired", e);
         } catch (UnsupportedJwtException e) {
-            throw new HapJwtException(JwtConstant.TOKEN_UNSUPPORTED, "JWT token is unsupported", e);
+            throw new HapJwtException(JwtStatus.TOKEN_UNSUPPORTED, "JWT token is unsupported", e);
         } catch (MalformedJwtException e) {
-            throw new HapJwtException(JwtConstant.TOKEN_MALFORMED, "JWT token is malformed", e);
+            throw new HapJwtException(JwtStatus.TOKEN_MALFORMED, "JWT token is malformed", e);
         } catch (SecurityException e) {
-            throw new HapJwtException(JwtConstant.SIGNATURE_INVALID, "JWT signature validation failed", e);
+            throw new HapJwtException(JwtStatus.SIGNATURE_INVALID, "JWT signature validation failed", e);
         } catch (IllegalArgumentException e) {
-            throw new HapJwtException(JwtConstant.TOKEN_ILLEGAL, "JWT token is illegal or empty", e);
+            throw new HapJwtException(JwtStatus.TOKEN_ILLEGAL, "JWT token is illegal or empty", e);
         } catch (Exception e) {
-            throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Unknown error while parsing JWT", e);
+            throw new HapJwtException(JwtStatus.UNKNOWN_ERROR, "Unknown error while parsing JWT", e);
         }
     }
 
@@ -73,36 +77,28 @@ class Jwt implements JwtService {
     @Override
     public String generateToken(JwtRequest param) {
         if (param == null) {
-            throw new HapJwtException(JwtConstant.JWT_PARAM_NULL, "JwtParam cannot be null");
+            throw new HapJwtException(JwtStatus.JWT_PARAM_NULL, "JwtParam cannot be null");
         }
 
         try {
+            JwtBuilder builder = Jwts.builder()
+                    .claims().add(param.getClaims()).and()
+                    .subject(param.getSubject())
+                    .issuer(Encoders.BASE64.encode(issuer.getBytes()))
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .audience().add(param.getAudience()).and();
+
             if (param.getUseExpiration()) {
                 if (expiration == null) {
-                    throw new HapJwtException(JwtConstant.EXPIRATION_NOT_PROVIDED, "You must specify an expiration when initializing HapJwt");
+                    throw new HapJwtException(JwtStatus.EXPIRATION_NOT_PROVIDED, "You must specify an expiration when initializing HapJwt");
                 }
 
-                return Jwts.builder()
-                        .addClaims(param.getClaims())
-                        .setSubject(param.getSubject())
-                        .setIssuer(Encoders.BASE64.encode(issuer.getBytes()))
-                        .setIssuedAt(new Date(System.currentTimeMillis()))
-                        .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                        .setAudience(param.getAudience())
-                        .signWith(getSigningKey())
-                        .compact();
-            } else {
-                return Jwts.builder()
-                        .addClaims(param.getClaims())
-                        .setSubject(param.getSubject())
-                        .setIssuer(Encoders.BASE64.encode(issuer.getBytes()))
-                        .setIssuedAt(new Date(System.currentTimeMillis()))
-                        .setAudience(param.getAudience())
-                        .signWith(getSigningKey())
-                        .compact();
+                builder.expiration(new Date(System.currentTimeMillis() + expiration));
             }
+
+            return builder.signWith(getSigningKey()).compact();
         } catch (Exception e) {
-            throw new HapJwtException(JwtConstant.TOKEN_GENERATION_FAILED, "Failed to generate JWT token", e);
+            throw new HapJwtException(JwtStatus.TOKEN_GENERATION_FAILED, "Failed to generate JWT token", e);
         }
     }
 
@@ -111,9 +107,9 @@ class Jwt implements JwtService {
         try {
             return extract(token, Claims::getExpiration).before(new Date());
         } catch (ExpiredJwtException e) {
-            throw new HapJwtException(JwtConstant.TOKEN_EXPIRED, "JWT token has expired", e);
+            throw new HapJwtException(JwtStatus.TOKEN_EXPIRED, "JWT token has expired", e);
         } catch (Exception e) {
-            throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Failed to check if token is expired", e);
+            throw new HapJwtException(JwtStatus.UNKNOWN_ERROR, "Failed to check if token is expired", e);
         }
     }
 
@@ -122,7 +118,7 @@ class Jwt implements JwtService {
         try {
             return extract(token, claims -> claims.get(identifier, String.class));
         } catch (Exception e) {
-            throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Failed to extract claim '" + identifier + "' from JWT", e);
+            throw new HapJwtException(JwtStatus.UNKNOWN_ERROR, "Failed to extract claim '" + identifier + "' from JWT", e);
         }
     }
 
@@ -131,7 +127,7 @@ class Jwt implements JwtService {
         try {
             return extract(token, claims -> claims.get(identifier, type));
         } catch (Exception e) {
-            throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Failed to extract claim '" + identifier + "' from JWT", e);
+            throw new HapJwtException(JwtStatus.UNKNOWN_ERROR, "Failed to extract claim '" + identifier + "' from JWT", e);
         }
     }
 
@@ -140,16 +136,16 @@ class Jwt implements JwtService {
         try {
             return extract(token, Claims::getSubject);
         } catch (Exception e) {
-            throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Failed to extract subject from JWT", e);
+            throw new HapJwtException(JwtStatus.UNKNOWN_ERROR, "Failed to extract subject from JWT", e);
         }
     }
 
     @Override
-    public String getAudience(String token) {
+    public Set<String> getAudience(String token) {
         try {
             return extract(token, Claims::getAudience);
         } catch (Exception e) {
-            throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Failed to extract audience from JWT", e);
+            throw new HapJwtException(JwtStatus.UNKNOWN_ERROR, "Failed to extract audience from JWT", e);
         }
     }
 
@@ -158,7 +154,7 @@ class Jwt implements JwtService {
         try {
             return issuer.equals(new String(Decoders.BASE64.decode(extract(token, Claims::getIssuer))));
         } catch (Exception e) {
-            throw new HapJwtException(JwtConstant.UNKNOWN_ERROR, "Failed to verify JWT signature issuer", e);
+            throw new HapJwtException(JwtStatus.UNKNOWN_ERROR, "Failed to verify JWT signature issuer", e);
         }
     }
 }

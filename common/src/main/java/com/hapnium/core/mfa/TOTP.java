@@ -29,7 +29,7 @@ class TOTP {
      * @param text: the message or text to be authenticated
      */
     @SneakyThrows
-    private byte[] hmac_sha(String crypto, byte[] keyBytes, byte[] text){
+    private byte @NotNull [] hmac_sha(String crypto, byte[] keyBytes, byte[] text){
         Mac hmac = Mac.getInstance(crypto);
         hmac.init(new SecretKeySpec(keyBytes, "RAW"));
         return hmac.doFinal(text);
@@ -68,7 +68,7 @@ class TOTP {
      * @return a numeric String in base 10 that includes digits
      */
 
-    public String generate(String key, String time, String returnDigits){
+    public @NotNull String generate(String key, String time, String returnDigits){
         return generate(key, time, returnDigits, "HmacSHA1");
     }
 

@@ -5,6 +5,8 @@ import com.hapnium.core.jwt.models.JwtRequest;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
+
 /**
  * HapJwt provides a simple and secure interface for generating and parsing JSON Web Tokens (JWT).
  * It internally delegates to {@link Jwt}, abstracting away the implementation details while exposing
@@ -75,7 +77,7 @@ public class HapJwt implements JwtService {
     }
 
     @Override
-    public String getAudience(String token) {
+    public Set<String> getAudience(String token) {
         return delegate.getAudience(token);
     }
 

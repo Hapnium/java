@@ -1,7 +1,10 @@
 package com.hapnium.core.models;
 
 import com.hapnium.core.enums.MailType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +16,9 @@ import java.util.Map;
  * optional CC, BCC, attachments, and metadata.
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MailRequest {
     /**
      * The email address of the sender. Must follow the format "Name <email@domain.com>".

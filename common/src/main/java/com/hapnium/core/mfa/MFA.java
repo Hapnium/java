@@ -21,7 +21,7 @@ class MFA implements MFAService {
     private final TOTP totp = new TOTP();
 
     @Override
-    public String generateSecret(@NotNull Boolean readable) {
+    public @NotNull String generateSecret(@NotNull Boolean readable) {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[20];
         random.nextBytes(bytes);
@@ -37,7 +37,7 @@ class MFA implements MFAService {
     }
 
     @Override
-    public String getCode(@NotNull String secret) {
+    public @NotNull String getCode(@NotNull String secret) {
         String hexKey = Hex.encodeHexString(new Base32().decode(secret.replace(" ", "").toUpperCase()));
         String hexTime = Long.toHexString((System.currentTimeMillis() / 1000) / 30);
 

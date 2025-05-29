@@ -1,11 +1,17 @@
 package com.hapnium.core.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Configuration parameters required for storage integration (e.g., Cloudinary).
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class StorageParam {
     /**
      * API key for authentication.

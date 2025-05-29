@@ -12,7 +12,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import java.util.Objects;
 
 class MailUtils {
-    public static CreateEmailOptions getOptions(@NotNull MailRequest param) {
+    public static @NotNull CreateEmailOptions getOptions(@NotNull MailRequest param) {
         CreateEmailOptions.Builder builder = CreateEmailOptions.builder();
         builder.from(param.getFrom());
         builder.to(param.getTo());

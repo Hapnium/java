@@ -1,6 +1,9 @@
 package com.hapnium.core.token_generator.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <h1>TokenParam</h1>
@@ -8,6 +11,9 @@ import lombok.Data;
  * and one-time passwords (OTPs). It allows the user to define custom characters and lengths for both OTPs and tokens.
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TokenParam {
     /**
      * A string representing the characters to be used for generating the OTP.

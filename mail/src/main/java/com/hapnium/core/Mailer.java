@@ -60,7 +60,7 @@ class Mailer implements MailService {
      * @throws HapMailException if rendering fails due to missing template or context errors.
      */
     @Override
-    public String convertHtmlToString(String template, @NotNull Map<String, Object> params) {
+    public @NotNull String convertHtmlToString(String template, @NotNull Map<String, Object> params) {
         Context context = new Context();
         params.forEach(context::setVariable);
 
@@ -79,7 +79,7 @@ class Mailer implements MailService {
      * @throws HapMailException if sending fails (e.g. due to network or API error).
      */
     @Override
-    public String send(MailRequest param) {
+    public @NotNull String send(MailRequest param) {
         if (param == null) {
             throw new HapMailException("Email sending failed: MailParam must not be null.");
         }

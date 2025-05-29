@@ -1,6 +1,9 @@
 package com.hapnium.core.jwt.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
@@ -22,6 +25,9 @@ import java.util.Map;
  * }</pre>
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class JwtRequest {
     /**
      * The unique subject or principal of the JWT.

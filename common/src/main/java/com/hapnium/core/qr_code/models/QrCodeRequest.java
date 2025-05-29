@@ -1,6 +1,9 @@
 package com.hapnium.core.qr_code.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * QrCodeParam represents the parameters required to generate a customized QR code.
@@ -21,6 +24,9 @@ import lombok.Data;
  * }</pre>
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class QrCodeRequest {
     /**
      * The URL or text to be encoded into the QR code.

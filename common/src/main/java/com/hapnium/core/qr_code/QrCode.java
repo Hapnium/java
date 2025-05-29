@@ -3,6 +3,7 @@ package com.hapnium.core.qr_code;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.hapnium.core.qr_code.enums.QrCodeStatus;
 import org.apache.commons.codec.binary.Base64;
 import com.hapnium.core.exception.HapQrCodeException;
 import com.hapnium.core.qr_code.models.QrCodeRequest;
@@ -25,9 +26,9 @@ import java.nio.charset.StandardCharsets;
  */
 class QrCode implements QrCodeService {
     @Override
-    public String getAuthenticatorUrl(String secret, String account, String issuer) {
+    public @NotNull String getAuthenticatorUrl(String secret, String account, String issuer) {
         if((secret == null || secret.isEmpty()) || (account == null || account.isEmpty()) || (issuer == null || issuer.isEmpty())) {
-            throw new HapQrCodeException(QrCodeConstant.MISSING_KEY, "You must provide a secret, account, issuer and secret");
+            throw new HapQrCodeException(QrCodeStatus.MISSING_KEY, "You must provide a secret, account, issuer and secret");
         }
 
         return "otpauth://totp/"
@@ -37,9 +38,9 @@ class QrCode implements QrCodeService {
     }
 
     @Override
-    public String generate(QrCodeRequest param) {
+    public @NotNull String generate(QrCodeRequest param) {
         if(param == null) {
-            throw new HapQrCodeException(QrCodeConstant.MISSING_PARAMETER, "You must provide the parameters for the QrCode you want to generate");
+            throw new HapQrCodeException(QrCodeStatus.MISSING_PARAMETER, "You must provide the parameters for the QrCode you want to generate");
         }
 
         BufferedImage qrImage = getBufferedImage(param);
@@ -56,7 +57,7 @@ class QrCode implements QrCodeService {
 
             return Base64.encodeBase64String(outputStream.toByteArray());
         } catch (Exception e) {
-            throw new HapQrCodeException(QrCodeConstant.GENERATION_FAILED, e.getMessage(), e);
+            throw new HapQrCodeException(QrCodeStatus.GENERATION_FAILED, e.getMessage(), e);
         }
     }
 
@@ -75,7 +76,7 @@ class QrCode implements QrCodeService {
             // Convert the BitMatrix to a BufferedImage with the specified color
             return createScaledQRCode(trimWhitePadding(bitMatrix), param);
         } catch (Exception e) {
-            throw new HapQrCodeException(QrCodeConstant.IMAGE_GENERATION_FAILED, e.getMessage(), e);
+            throw new HapQrCodeException(QrCodeStatus.IMAGE_GENERATION_FAILED, e.getMessage(), e);
         }
     }
 
@@ -196,7 +197,7 @@ class QrCode implements QrCodeService {
             graphics.drawImage(image, centerX, centerY, w, h, null);
             graphics.dispose();
         } catch (Exception e) {
-            throw new HapQrCodeException(QrCodeConstant.LOGO_ADDITION_FAILED, e.getMessage(), e);
+            throw new HapQrCodeException(QrCodeStatus.LOGO_ADDITION_FAILED, e.getMessage(), e);
         }
     }
 }

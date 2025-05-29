@@ -1,13 +1,18 @@
 package com.hapnium.core.models;
 
 import com.hapnium.core.enums.MailProvider;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Configuration parameters required for sending emails using SMTP or an email service provider.
  */
 @Data
+@Builder
+@AllArgsConstructor
 public class MailParam {
     /**
      * SMTP server host (e.g., smtp.gmail.com).
