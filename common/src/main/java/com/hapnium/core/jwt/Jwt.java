@@ -83,7 +83,7 @@ class Jwt implements JwtService {
                 }
 
                 return Jwts.builder()
-                        .setClaims(param.getClaims())
+                        .addClaims(param.getClaims())
                         .setSubject(param.getSubject())
                         .setIssuer(Encoders.BASE64.encode(issuer.getBytes()))
                         .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -93,7 +93,7 @@ class Jwt implements JwtService {
                         .compact();
             } else {
                 return Jwts.builder()
-                        .setClaims(param.getClaims())
+                        .addClaims(param.getClaims())
                         .setSubject(param.getSubject())
                         .setIssuer(Encoders.BASE64.encode(issuer.getBytes()))
                         .setIssuedAt(new Date(System.currentTimeMillis()))
