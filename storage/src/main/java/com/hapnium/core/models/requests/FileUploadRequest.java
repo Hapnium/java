@@ -61,6 +61,6 @@ public class FileUploadRequest {
      * @return true or false.
      */
     public boolean hasContent() {
-        return path.isEmpty() || bytes == null;
+        return !path.isEmpty() || get() != null;
     }
 }
