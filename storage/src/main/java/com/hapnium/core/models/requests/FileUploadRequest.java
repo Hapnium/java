@@ -1,9 +1,15 @@
 package com.hapnium.core.models.requests;
 
+import com.hapnium.core.exception.HapStorageException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Represents a single file upload request payload.
@@ -45,14 +51,31 @@ public class FileUploadRequest {
 
     /**
      * Returns the best available data source (data or bytes).
+     * If none is provided but the path is provided, it will generate the byte from the path
      *
      * @return byte array representing the file content.
      */
     public byte[] get() {
-        if (getData() != null) {
-            return getData();
+        if (data != null && data.length > 0) {
+            return data;
         }
-        return getBytes();
+
+        if (bytes != null && bytes.length > 0) {
+            return bytes;
+        }
+
+        if (path != null && !path.isEmpty()) {
+            try {
+                Path filePath = Paths.get(path);
+                bytes = Files.readAllBytes(filePath); // Cache result to avoid multiple reads
+
+                return bytes;
+            } catch (IOException e) {
+                throw new HapStorageException("Failed to read file from path: " + path, e);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -61,6 +84,8 @@ public class FileUploadRequest {
      * @return true or false.
      */
     public boolean hasContent() {
-        return !path.isEmpty() || (get() != null && get().length > 0);
+        byte[] result = get();
+
+        return !path.isEmpty() || (result != null && result.length > 0);
     }
 }
