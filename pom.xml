@@ -7,7 +7,7 @@
 
     <groupId>com.hapnium</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.3.Final</version>
+    <version>1.0.31</version>
     <packaging>pom</packaging>
 
     <modules>
