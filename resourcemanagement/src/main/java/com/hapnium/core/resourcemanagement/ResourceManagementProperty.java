@@ -2,7 +2,10 @@ package com.hapnium.core.resourcemanagement;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.Duration;
 import java.util.Map;
@@ -14,8 +17,10 @@ import java.util.Map;
  */
 @Getter
 @Setter
+@Lazy(false)
+@Configuration(proxyBeanMethods = false)
 @ConfigurationProperties(prefix = "hapnium.resourcemanagement")
-public class ResourceManagementProperty {
+public class ResourceManagementProperty implements InitializingBean {
     /**
      * Cache-related configuration properties.
      */
@@ -323,5 +328,110 @@ public class ResourceManagementProperty {
          * Whether to enable a metrics collection for in-memory rate limiting.
          */
         private boolean enableMetrics = true;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        // Validate Cache Properties
+        if (cache.getProvider() == null || cache.getProvider().isBlank()) {
+            cache.setProvider("caffeine");
+        }
+
+        if (cache.getDefaultTtl() == null) {
+            cache.setDefaultTtl(Duration.ofMinutes(5));
+        }
+
+        if (cache.getKeyPrefix() == null) {
+            cache.setKeyPrefix("cache:");
+        }
+
+        if (cache.getCaffeine() != null) {
+            if (cache.getCaffeine().getExpireAfterWrite() == null) {
+                cache.getCaffeine().setExpireAfterWrite(Duration.ofMinutes(10));
+            }
+            if (cache.getCaffeine().getExpireAfterAccess() == null) {
+                cache.getCaffeine().setExpireAfterAccess(Duration.ofMinutes(5));
+            }
+        }
+
+        if (cache.getRedis() != null) {
+            if (cache.getRedis().getKeyExpiration() == null) {
+                cache.getRedis().setKeyExpiration(Duration.ofHours(1));
+            }
+            if (cache.getRedis().getRetryDelay() == null) {
+                cache.getRedis().setRetryDelay(Duration.ofMillis(100));
+            }
+        }
+
+        // Validate Rate Limit Properties
+        if (rateLimit.getProvider() == null || rateLimit.getProvider().isBlank()) {
+            rateLimit.setProvider("memory");
+        }
+
+        if (rateLimit.getDefaultStrategy() == null || rateLimit.getDefaultStrategy().isBlank()) {
+            rateLimit.setDefaultStrategy("sliding-window");
+        }
+
+        if (rateLimit.getDefaultWindow() == null) {
+            rateLimit.setDefaultWindow(Duration.ofMinutes(1));
+        }
+
+        if (rateLimit.getKeyPrefix() == null) {
+            rateLimit.setKeyPrefix("rl:");
+        }
+
+        if (rateLimit.getRedis() != null) {
+            if (rateLimit.getRedis().getKeyExpiration() == null) {
+                rateLimit.getRedis().setKeyExpiration(Duration.ofHours(1));
+            }
+            if (rateLimit.getRedis().getRetryDelay() == null) {
+                rateLimit.getRedis().setRetryDelay(Duration.ofMillis(100));
+            }
+        }
+
+        if (rateLimit.getMemory() != null) {
+            if (rateLimit.getMemory().getCleanupInterval() == null) {
+                rateLimit.getMemory().setCleanupInterval(Duration.ofMinutes(5));
+            }
+        }
+
+        // Endpoint-level defaults
+        if (rateLimit.getEndpoints() != null) {
+            for (Map.Entry<String, EndpointProperties> entry : rateLimit.getEndpoints().entrySet()) {
+                EndpointProperties ep = entry.getValue();
+
+                if (ep.getWindow() == null) {
+                    ep.setWindow(rateLimit.getDefaultWindow());
+                }
+                if (ep.getStrategy() == null || ep.getStrategy().isBlank()) {
+                    ep.setStrategy(rateLimit.getDefaultStrategy());
+                }
+            }
+        }
+
+        // User-type-level defaults
+        if (rateLimit.getUserTypes() != null) {
+            for (Map.Entry<String, UserTypeProperties> entry : rateLimit.getUserTypes().entrySet()) {
+                UserTypeProperties ut = entry.getValue();
+
+                if (ut.getWindow() == null) {
+                    ut.setWindow(rateLimit.getDefaultWindow());
+                }
+                if (ut.getStrategy() == null || ut.getStrategy().isBlank()) {
+                    ut.setStrategy(rateLimit.getDefaultStrategy());
+                }
+            }
+        }
+
+        // Cache named configurations
+        if (cache.getCaches() != null) {
+            for (Map.Entry<String, CacheConfigProperties> entry : cache.getCaches().entrySet()) {
+                CacheConfigProperties c = entry.getValue();
+
+                if (c.getTtl() == null) {
+                    c.setTtl(cache.getDefaultTtl());
+                }
+            }
+        }
     }
 }

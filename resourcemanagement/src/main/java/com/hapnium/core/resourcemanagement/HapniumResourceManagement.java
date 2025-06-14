@@ -5,7 +5,6 @@ import com.hapnium.core.resourcemanagement.rate_limit.ResourceManagementRateLimi
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
@@ -70,7 +69,6 @@ import org.springframework.context.annotation.Import;
  */
 @Slf4j
 @AutoConfiguration
-@EnableConfigurationProperties(ResourceManagementProperty.class)
 @Import({
 		ResourceManagementRedisManager.class,
 		ResourceManagementRateLimitManager.class,
