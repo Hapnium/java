@@ -2,3 +2,4 @@ com.hapnium.core.resourcemanagement.ResourceManagementProperty
 com.hapnium.core.resourcemanagement.HapniumResourceManagement
 com.hapnium.core.resourcemanagement.cache.ResourceManagementCacheManager
 com.hapnium.core.resourcemanagement.rate_limit.ResourceManagementRateLimitManager
+com.hapnium.core.resourcemanagement.ResourceManagementRedisManager
