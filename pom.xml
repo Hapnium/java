@@ -7,8 +7,12 @@
 
     <groupId>com.hapnium</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.32</version>
+    <version>1.0.33</version>
     <packaging>pom</packaging>
+
+    <properties>
+        <parent.version>1.0.33</parent.version>
+    </properties>
 
     <modules>
         <module>util</module>
@@ -17,6 +21,7 @@
         <module>common</module>
         <module>mail</module>
         <module>notification</module>
+        <module>resourcemanagement</module>
     </modules>
 
     <distributionManagement>

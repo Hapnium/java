@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration[0]=com.hapnium.core.resourcemanagement.HapniumResourceManagement
+org.springframework.boot.autoconfigure.EnableAutoConfiguration[1]=com.hapnium.core.resourcemanagement.cache.ResourceManagementCacheManager
+org.springframework.boot.autoconfigure.EnableAutoConfiguration[2]=com.hapnium.core.resourcemanagement.rate_limit.ResourceManagementRateLimitManager
