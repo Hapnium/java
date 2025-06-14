@@ -82,6 +82,7 @@ public class HapniumResourceManagement {
 	@Bean
 	@ConditionalOnMissingBean(UserResourceManagementProvider.class)
 	public UserResourceManagementProvider defaultCurrentUserProvider() {
+		log.info("Using default user provider");
 		return () -> null;
 	}
 }
