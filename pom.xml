@@ -7,11 +7,11 @@
 
     <groupId>com.hapnium</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.35</version>
+    <version>1.0.36</version>
     <packaging>pom</packaging>
 
     <properties>
-        <parent.version>1.0.35</parent.version>
+        <parent.version>1.0.36</parent.version>
     </properties>
 
     <modules>

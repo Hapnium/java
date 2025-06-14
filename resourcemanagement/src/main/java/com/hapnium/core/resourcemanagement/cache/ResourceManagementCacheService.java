@@ -5,7 +5,6 @@ import com.hapnium.core.resourcemanagement.cache.models.CacheRequest;
 import com.hapnium.core.resourcemanagement.cache.models.CacheResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -36,7 +35,6 @@ import java.util.concurrent.CompletableFuture;
  * @author Evaristus Adimonyemma
  */
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class ResourceManagementCacheService {
     private final ResourceManagementCacheProvider cacheProvider;

@@ -40,8 +40,8 @@ import java.time.Duration;
  */
 @Slf4j
 @Aspect
-@Component
 @Order(1)
+@Component
 @RequiredArgsConstructor
 class ResourceManagementRateLimitAspect {
     private final ResourceManagementRateLimitService rateLimitService;

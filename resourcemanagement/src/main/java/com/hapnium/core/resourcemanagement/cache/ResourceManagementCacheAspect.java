@@ -49,8 +49,8 @@ import java.util.Optional;
  */
 @Slf4j
 @Aspect
-@Component
 @Order(2) // Execute after rate limiting
+@Component
 @RequiredArgsConstructor
 class ResourceManagementCacheAspect {
     private final ResourceManagementCacheService resourceManagementCacheService;

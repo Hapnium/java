@@ -5,7 +5,6 @@ import com.hapnium.core.resourcemanagement.rate_limit.models.RateLimitRequest;
 import com.hapnium.core.resourcemanagement.rate_limit.models.RateLimitResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
@@ -36,7 +35,6 @@ import java.time.Duration;
  * @author Evaristus Adimonyemma
  */
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class ResourceManagementRateLimitService {
     private final ResourceManagementRateLimitProvider rateLimitProvider;
