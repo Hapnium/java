@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Lazy;
 
 import java.time.Duration;
@@ -20,7 +19,6 @@ import java.util.Map;
 @Setter
 @Lazy(false)
 @AutoConfiguration
-@EnableConfigurationProperties
 @ConfigurationProperties(prefix = "hapnium.resourcemanagement")
 public class ResourceManagementProperty implements InitializingBean {
     /**

@@ -1,0 +1,345 @@
+{
+  "groups": [
+    {
+      "name": "hapnium.resourcemanagement",
+      "type": "com.hapnium.core.resourcemanagement.ResourceManagementProperty",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache",
+      "type": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty",
+      "sourceMethod": "getCache()"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.redis",
+      "type": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "sourceMethod": "getRedis()"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.caffeine",
+      "type": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CaffeineProperties",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "sourceMethod": "getCaffeine()"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit",
+      "type": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty",
+      "sourceMethod": "getRateLimit()"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.redis",
+      "type": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "sourceMethod": "getRedis()"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.memory",
+      "type": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$MemoryProperties",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "sourceMethod": "getMemory()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "hapnium.resourcemanagement.cache.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether caching is enabled.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.provider",
+      "type": "java.lang.String",
+      "description": "The caching provider to use: `caffeine`, `redis`, or `memory`.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "defaultValue": "caffeine"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.default-ttl",
+      "type": "java.time.Duration",
+      "description": "Default time-to-live (TTL) for cache entries.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "defaultValue": "5m"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.key-prefix",
+      "type": "java.lang.String",
+      "description": "Prefix for all cache keys.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "defaultValue": "cache:"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.enable-metrics",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable a metrics collection for the cache.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.enable-statistics",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable internal cache statistics (hit/miss ratio, etc.).",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.caches",
+      "type": "java.util.Map<java.lang.String,com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheConfigProperties>",
+      "description": "Configuration for named caches. The key is the cache name.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CacheProperties"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.redis.key-prefix",
+      "type": "java.lang.String",
+      "description": "Prefix used for all Redis keys.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": ""
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.redis.key-expiration",
+      "type": "java.time.Duration",
+      "description": "Default expiration time for Redis keys.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": "1h"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.redis.max-retries",
+      "type": "java.lang.Integer",
+      "description": "Maximum number of retry attempts for Redis operations.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": 3
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.redis.retry-delay",
+      "type": "java.time.Duration",
+      "description": "Delay between Redis operation retry attempts.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": "100ms"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.redis.enable-compression",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable compression of Redis values.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.redis.compression-threshold",
+      "type": "java.lang.Integer",
+      "description": "Minimum value size (in bytes) required before compression is applied.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": 1024
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.caffeine.maximum-size",
+      "type": "java.lang.Integer",
+      "description": "Maximum number of entries in the Caffeine cache.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CaffeineProperties",
+      "defaultValue": 10000
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.caffeine.expire-after-write",
+      "type": "java.time.Duration",
+      "description": "Duration after which an entry expires after it is written.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CaffeineProperties",
+      "defaultValue": "10m"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.caffeine.expire-after-access",
+      "type": "java.time.Duration",
+      "description": "Duration after which an entry expires after last access.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CaffeineProperties",
+      "defaultValue": "5m"
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.caffeine.enable-statistics",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable Caffeine's statistics.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CaffeineProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "hapnium.resourcemanagement.cache.caffeine.record-stats",
+      "type": "java.lang.Boolean",
+      "description": "Whether to record Caffeine stats for analysis.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$CaffeineProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether rate limiting is enabled.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.provider",
+      "type": "java.lang.String",
+      "description": "Provider used for storing rate limit data: `memory`, `redis`.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "defaultValue": "memory"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.default-strategy",
+      "type": "java.lang.String",
+      "description": "Default rate limiting strategy used: `sliding-window`, `token-bucket`, or `fixed-window`.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "defaultValue": "sliding-window"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.default-limit",
+      "type": "java.lang.Integer",
+      "description": "Default request limit per window.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "defaultValue": 100
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.default-window",
+      "type": "java.time.Duration",
+      "description": "Default time window for rate limiting.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "defaultValue": "1m"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.skip-on-failure",
+      "type": "java.lang.Boolean",
+      "description": "Whether to skip rate limiting if an internal error occurs.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.key-prefix",
+      "type": "java.lang.String",
+      "description": "Prefix used for all rate limit keys.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties",
+      "defaultValue": "rl:"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.endpoints",
+      "type": "java.util.Map<java.lang.String,com.hapnium.core.resourcemanagement.ResourceManagementProperty$EndpointProperties>",
+      "description": "Endpoint-specific rate limit configurations. The key is the endpoint path.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.user-types",
+      "type": "java.util.Map<java.lang.String,com.hapnium.core.resourcemanagement.ResourceManagementProperty$UserTypeProperties>",
+      "description": "User-type-specific rate limit configurations. The key is the user type name.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RateLimitProperties"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.redis.key-prefix",
+      "type": "java.lang.String",
+      "description": "Prefix used for all Redis keys.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": ""
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.redis.key-expiration",
+      "type": "java.time.Duration",
+      "description": "Default expiration time for Redis keys.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": "1h"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.redis.max-retries",
+      "type": "java.lang.Integer",
+      "description": "Maximum number of retry attempts for Redis operations.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": 3
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.redis.retry-delay",
+      "type": "java.time.Duration",
+      "description": "Delay between Redis operation retry attempts.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": "100ms"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.redis.enable-compression",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable compression of Redis values.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.redis.compression-threshold",
+      "type": "java.lang.Integer",
+      "description": "Minimum value size (in bytes) required before compression is applied.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$RedisProperties",
+      "defaultValue": 1024
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.memory.max-entries",
+      "type": "java.lang.Integer",
+      "description": "Maximum number of entries in the in-memory store.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$MemoryProperties",
+      "defaultValue": 10000
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.memory.cleanup-interval",
+      "type": "java.time.Duration",
+      "description": "Interval between periodic cleanup of stale entries.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$MemoryProperties",
+      "defaultValue": "5m"
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.memory.enable-metrics",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable a metrics collection for in-memory rate limiting.",
+      "sourceType": "com.hapnium.core.resourcemanagement.ResourceManagementProperty$MemoryProperties",
+      "defaultValue": true
+    }
+  ],
+  "hints": [
+    {
+      "name": "hapnium.resourcemanagement.cache.provider",
+      "values": [
+        {
+          "value": "caffeine",
+          "description": "Use Caffeine as the caching provider."
+        },
+        {
+          "value": "redis",
+          "description": "Use Redis as the caching provider."
+        },
+        {
+          "value": "memory",
+          "description": "Use in-memory caching provider."
+        }
+      ]
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.provider",
+      "values": [
+        {
+          "value": "memory",
+          "description": "Use in-memory storage for rate limit data."
+        },
+        {
+          "value": "redis",
+          "description": "Use Redis for storing rate limit data."
+        }
+      ]
+    },
+    {
+      "name": "hapnium.resourcemanagement.rate-limit.default-strategy",
+      "values": [
+        {
+          "value": "sliding-window",
+          "description": "Use sliding window rate limiting strategy."
+        },
+        {
+          "value": "token-bucket",
+          "description": "Use token bucket rate limiting strategy."
+        },
+        {
+          "value": "fixed-window",
+          "description": "Use fixed window rate limiting strategy."
+        }
+      ]
+    }
+  ]
+}
